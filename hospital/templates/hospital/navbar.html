@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}CP1-Gr.J{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Ionicons for icons if needed -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
+    {% load static %}
+    <!-- Extra CSS block for pages like schedule.html -->
+    {% block extra_css %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'hospitalapp/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+      /* Custom header/nav styling for CP1-Gr.J */
+      header {
+        width: 100%;
+        background: #7fffe0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 30px;
+        height: 60px;
+        box-sizing: border-box;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1040;
+      }
+      .header-left .logo {
+        font-weight: bold;
+        font-size: 28px;
+        color: #ff1c1c;
+        letter-spacing: 1px;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+      }
+      .header-left .logo:hover {
+        opacity: 0.7;
+        text-decoration: underline;
+      }
+      .address,
+      .email,
+      .number {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .address i,
+      .email i,
+      .number i {
+        font-size: 20px;
+        color: #000;
+      }
+      .address-text,
+      .number-text,
+      .email a {
+        font-size: 16px;
+        color: #000;
+        line-height: 1.1;
+        font-family: Arial, sans-serif;
+        text-decoration: none;
+      }
+      .address-text:hover,
+      .number-text:hover,
+      .email a:hover {
+        text-decoration: underline;
+      }
+      /* Navigation links styling */
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-left: 30px;
+      }
+      .nav-links a,
+      .nav-links button {
+        font-size: 16px;
+        color: #000;
+        background: none;
+        border: none;
+        padding: 0 8px;
+        text-decoration: none;
+        font-family: Arial, sans-serif;
+        cursor: pointer;
+        outline: none;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover,
+      .nav-links button:hover {
+        color: #337AB7;
+        text-decoration: underline;
+      }
+      /* Responsive design */
+      @media (max-width: 1100px) {
+        header {
+          flex-wrap: wrap;
+        }
+        .nav-links {
+          gap: 8px;
+          margin-left: 10px;
+        }
+      }
+      @media (max-width: 900px) {
+        header {
+          flex-direction: column;
+          height: auto;
+          align-items: flex-start;
+          padding: 10px 5vw;
+          gap: 10px;
+        }
+        .nav-links {
+          margin-left: 0;
+          gap: 4px;
+          margin-top: 6px;
+        }
+      }
+      /* Main content pushed down due to fixed header */
+      main {
+        margin-top: 70px;
+        display: block;
+      }
+      .flash-message {
+        margin-top: 80px;
+        text-align: center;
+        color: #333;
+        font-weight: 500;
+      }
+    </style>
+</head> 
+<body>
+<header>
+  <!-- Left: Logo. Clickable, redirects to homebase.html -->
+  <div class="header-left">
+    <a href="{% url 'homebase' %}" class="logo">CP1-Gr.J</a>
+  </div>
+  <!-- Center: Address -->
+  <div class="address">
+    <i class="fas fa-map-marker-alt"></i>
+    <a href="https://www.google.com/maps/place/Dr.+Arcadio+Santos+Avenue,+Paranaque,+Metro+Manila" target="_blank" class="address-text">
+      Dr. Arcadio Santos Avenue,<br>Paranaque 1715 Metro Manila
+    </a>
+  </div>
+  <!-- Center: Email -->
+  <div class="email">
+    <i class="fas fa-envelope-open"></i>
+    <a href="/contactus">Hospitaltest01@gmail.com</a>
+  </div>
+  <!-- Right: Phone -->
+  <div class="number">
+    <i class="fas fa-phone-alt"></i>
+    <a href="tel:+63212346789" class="number-text">[02] 1234-6789,<br>[02] 1234-5678</a>
+  </div>
+  <!-- Navigation links (Admin, Doctor, Patient, Contact Us, Logout) -->
+  <nav class="nav-links">
+    <a href="/adminclick" class="nav-item nav-link p-0">Admin</a>
+    <a href="/doctorclick" class="nav-item nav-link p-0">Doctor</a>
+    <a href="/patientclick" class="nav-item nav-link p-0">Patient</a>
+    {% if user.is_authenticated %}
+    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+      {% csrf_token %}
+      <button type="submit" class="nav-item nav-link btn btn-link p-0" style="color: #000;">Logout</button>
+    </form>
+    {% endif %}
+  </nav>
+</header>
+
+    {% if messages %} 
+    <div class="flash-message">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %} 
+    </div>
+    {% endif %}
+
+    <main>{% block content %}{% endblock %}</main>
+
+    {% load static %}
+    <script src="{% static 'hospitalapp/script.js' %}"></script>
+
+<!-- Extra JS block for pages like schedule.html -->
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>
